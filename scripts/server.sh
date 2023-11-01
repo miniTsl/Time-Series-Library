@@ -1,6 +1,6 @@
-# export CUDA_VISIBLE_DEVICES=0,1
+export CUDA_VISIBLE_DEVICES=0,1
 model_name=TimesNet
-ks=(1 2 3 4 5)
+ks=(1 2 3 5 10 20 30)
 for k in ${ks[@]}
 do
   python -u run.py \
@@ -10,14 +10,14 @@ do
     --model $model_name \
     --data Server \
     --features S \
-    --seq_len 300 \
+    --seq_len 500 \
     --label_len 100\
     --root_path ./dataset/ETT-small/\
     --data_path ETTh1.csv\
     --train_epochs 20\
     --use_multi_gpu \
     --is_training 1 \
-    --pred_len 300 \
+    --pred_len 200 \
     --e_layers 2 \
     --d_layers 1 \
     --factor 3 \
@@ -29,6 +29,8 @@ do
     --des 'Exp' \
     --itr 1 \
     --top_k $k \
-    --batch_size 64 \
-    --inverse
+    --batch_size 32 \
+    --inverse \
+    --freq t
+
 done
