@@ -4,7 +4,7 @@ model_name=TimesNet
 
 python -u run.py \
   --task_name long_term_forecast \
-  --is_training 1 \
+  --is_training 0 \
   --model_id Server_300_300 \
   --model $model_name \
   --data Server \
@@ -26,3 +26,4 @@ python -u run.py \
   --itr 1 \
   --top_k 5 \
   --batch_size 64 \
+  --inverse

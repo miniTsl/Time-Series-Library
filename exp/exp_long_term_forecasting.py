@@ -210,7 +210,6 @@ class Exp_Long_Term_Forecast(Exp_Basic):
                 else:
                     if self.args.output_attention:
                         outputs = self.model(batch_x, batch_x_mark, dec_inp, batch_y_mark)[0]
-
                     else:
                         outputs = self.model(batch_x, batch_x_mark, dec_inp, batch_y_mark)
 
@@ -254,10 +253,10 @@ class Exp_Long_Term_Forecast(Exp_Basic):
             os.makedirs(folder_path)
 
         mae, mse, rmse, mape, mspe = metric(preds, trues)
-        print('mse:{}, mae:{}'.format(mse, mae))
+        print('mse:{}, rmse:{}, mae:{}, mape:{}, mspe:{}'.format(mse, rmse, mae, mape, mspe))
         f = open("result_long_term_forecast.txt", 'a')
         f.write(setting + "  \n")
-        f.write('mse:{}, mae:{}'.format(mse, mae))
+        f.write('mse:{}, rmse:{}, mae:{}, mape:{}, mspe:{}'.format(mse, rmse, mae, mape, mspe))
         f.write('\n')
         f.write('\n')
         f.close()
