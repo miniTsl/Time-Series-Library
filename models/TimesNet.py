@@ -111,11 +111,12 @@ class Model(nn.Module):
         # embedding
         enc_out = self.enc_embedding(x_enc, x_mark_enc)  # [B,T,C]
         enc_out = self.predict_linear(enc_out.permute(0, 2, 1)).permute(
-            0, 2, 1)  # align temporal dimension
+            0, 2, 1)  # align temporal dimension [B,pred_len+seq_len,C]
         # TimesNet
         for i in range(self.layer):
             enc_out = self.layer_norm(self.model[i](enc_out))
-        # porject back
+    
+        # project back  #[B,pred_len+seq_len,d_model]-->[B,pred_len+seq_len,c_out]
         dec_out = self.projection(enc_out)
 
         # De-Normalization from Non-stationary Transformer
@@ -125,6 +126,7 @@ class Model(nn.Module):
         dec_out = dec_out + \
                   (means[:, 0, :].unsqueeze(1).repeat(
                       1, self.pred_len + self.seq_len, 1))
+        # 在model.forward()中，dec_out[:, -self.pred_len:, :]会被返回
         return dec_out
 
     def imputation(self, x_enc, x_mark_enc, x_dec, x_mark_dec, mask):

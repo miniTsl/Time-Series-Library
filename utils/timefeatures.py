@@ -122,10 +122,11 @@ def time_features_from_frequency_str(freq_str: str) -> List[TimeFeature]:
     }
 
     offset = to_offset(freq_str)
-
+    # <Hour> for 'h', belongs to <offsets.Hour> Class
     for offset_type, feature_classes in features_by_offsets.items():
         if isinstance(offset, offset_type):
             return [cls() for cls in feature_classes]
+            # 返回的是一个列表，列表中的元素是类的实例，这些类之后起到的作用是调用类的__call__方法，
 
     supported_freq_msg = f"""
     Unsupported frequency {freq_str}

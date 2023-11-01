@@ -1,5 +1,5 @@
 from data_provider.data_loader import Dataset_ETT_hour, Dataset_ETT_minute, Dataset_Custom, Dataset_M4, PSMSegLoader, \
-    MSLSegLoader, SMAPSegLoader, SMDSegLoader, SWATSegLoader, UEAloader
+    MSLSegLoader, SMAPSegLoader, SMDSegLoader, SWATSegLoader, UEAloader, Server
 from data_provider.uea import collate_fn
 from torch.utils.data import DataLoader
 
@@ -15,7 +15,8 @@ data_dict = {
     'SMAP': SMAPSegLoader,
     'SMD': SMDSegLoader,
     'SWAT': SWATSegLoader,
-    'UEA': UEAloader
+    'UEA': UEAloader,
+    'Server': Server
 }
 
 
@@ -31,7 +32,7 @@ def data_provider(args, flag):
         else:
             batch_size = 1  # bsz=1 for evaluation
         freq = args.freq
-    else:
+    else:   # train or valid
         shuffle_flag = True
         drop_last = True
         batch_size = args.batch_size  # bsz for train and valid
@@ -71,18 +72,25 @@ def data_provider(args, flag):
     else:
         if args.data == 'm4':
             drop_last = False
-        data_set = Data(
-            root_path=args.root_path,
-            data_path=args.data_path,
-            flag=flag,
-            size=[args.seq_len, args.label_len, args.pred_len],
-            features=args.features,
-            target=args.target,
-            timeenc=timeenc,
-            freq=freq,
-            seasonal_patterns=args.seasonal_patterns
-        )
-        print(flag, len(data_set))
+        if args.data == 'Server':
+            data_set = Data(
+                flag=flag,
+                size=[args.seq_len, args.pred_len])
+        else:
+            data_set = Data(
+                root_path=args.root_path,
+                data_path=args.data_path,
+                flag=flag,
+                size=[args.seq_len, args.label_len, args.pred_len],
+                features=args.features,
+                target=args.target,
+                timeenc=timeenc,
+                freq=freq,
+                seasonal_patterns=args.seasonal_patterns
+            )
+            print('flag: ', flag, 'len dataset: ', len(data_set))
+                
+
         data_loader = DataLoader(
             data_set,
             batch_size=batch_size,

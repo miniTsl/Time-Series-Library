@@ -1,0 +1,61 @@
+{
+    // 使用 IntelliSense 了解相关属性。 
+    // 悬停以查看现有属性的描述。
+    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: 当前文件",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+            "--task_name",
+            "long_term_forecast",
+            "--is_training",
+            "1",
+            "--root_path",
+            "./dataset/ETT-small/",
+            "--data_path",
+            "ETTh1.csv",
+            "--model_id",
+            "Server_300_300",
+            "--model",
+            "TimesNet",
+            "--data",
+            "Server",
+            "--features",
+            "S",
+            "--seq_len",
+            "300",
+            "--label_len",
+            "100",
+            "--pred_len",
+            "300",
+            "--e_layers",
+            "2",
+            "--d_layers",
+            "1",
+            "--factor",
+            "3",
+            "--enc_in",
+            "1",
+            "--dec_in",
+            "1",
+            "--c_out",
+            "1",
+            "--d_model",
+            "16",
+            "--d_ff",
+            "32",
+            "--des",
+            "Exp",
+            "--itr",
+            "1",
+            "--top_k",
+            "5"]
+        }
+    ]
+}

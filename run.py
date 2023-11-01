@@ -9,6 +9,7 @@ from exp.exp_classification import Exp_Classification
 import random
 import numpy as np
 
+
 if __name__ == '__main__':
     fix_seed = 2021
     random.seed(fix_seed)
