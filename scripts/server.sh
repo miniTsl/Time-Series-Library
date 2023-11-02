@@ -1,5 +1,3 @@
-export CUDA_VISIBLE_DEVICES=0
-
 model_name=TimesNet
 
 ks=(1 2 3 4 5 10 20 30)
@@ -8,17 +6,17 @@ do
     python -u run.py \
         --task_name long_term_forecast \
         --is_training 1 \
-        --model_id Server_500_200 \
+        --model_id Server_400_100 \
         --model $model_name \
         --data Server \
         --features S \
-        --seq_len 500 \
+        --seq_len 400 \
         --label_len 100\
         --root_path dataset/server/\
         --data_path server.csv\
         --train_epochs 20\
         --is_training 1 \
-        --pred_len 200 \
+        --pred_len 100 \
         --e_layers 2 \
         --d_layers 1 \
         --factor 3 \
@@ -35,5 +33,6 @@ do
         --freq t \
         --target values \
         --learning_rate 0.001 \
+        --use_multi_gpu
 
 done

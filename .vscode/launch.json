@@ -63,6 +63,7 @@
             "--inverse",
             "--target",
             "values",
+            "--use_multi_gpu",
             ]
         }
     ]
