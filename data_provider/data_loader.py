@@ -11,16 +11,14 @@ from data_provider.m4 import M4Dataset, M4Meta
 from data_provider.uea import subsample, interpolate_missing, Normalizer
 from sktime.datasets import load_from_tsfile_to_dataframe
 import warnings
-from data_provider import influxdb_api
-import random
 
 warnings.filterwarnings('ignore')
 
 
 class Server(Dataset):
-    def __init__(self, root_path=None, flag='train', size=None,
-                 features='S', data_path=None,
-                 target='values', scale=True, timeenc=0, freq='10s', seasonal_patterns=None):
+    def __init__(self, root_path, flag='train', size=None,
+                 features='S', data_path='server.csv',
+                 target='values', scale=True, timeenc=0, freq='t', seasonal_patterns=None):
         self.seq_len = size[0]
         self.label_len = size[1]
         self.pred_len = size[1]
@@ -28,8 +26,8 @@ class Server(Dataset):
         assert flag in ['val', 'train', 'test']
         type_map = {'val': 0, 'train': 1, 'test': 2}
         self.set_type = type_map[flag]
-        self.train_ratio = 0.9
-        self.val_split = 0.1
+        self.train_ratio = 0.8
+        self.val_split = 0.2
 
         self.features = features
         self.target = target
@@ -43,14 +41,9 @@ class Server(Dataset):
 
         
     def __read_data__(self):
-        starts = ['2023-10-03T08:00:00z', '2023-10-03T20:00:00z', '2023-10-04T08:00:00z', '2023-10-04T20:00:00z', '2023-10-05T08:00:00z', '2023-10-05T20:00:00z', '2023-10-06T08:00:00z', '2023-10-06T20:00:00z', '2023-10-07T08:00:00z', '2023-10-07T20:00:00z', '2023-10-08T08:00:00z', '2023-10-08T20:00:00z', '2023-10-09T08:00:00z', '2023-10-09T20:00:00z', '2023-10-10T08:00:00z', '2023-10-10T20:00:00z', '2023-10-11T08:00:00z', '2023-10-11T20:00:00z', '2023-10-12T08:00:00z', '2023-10-12T20:00:00z', '2023-10-13T08:00:00z', '2023-10-13T20:00:00z', '2023-10-14T08:00:00z', '2023-10-14T20:00:00z', '2023-10-15T08:00:00z', '2023-10-15T20:00:00z', '2023-10-16T08:00:00z', '2023-10-16T20:00:00z', '2023-10-17T08:00:00z', '2023-10-17T20:00:00z', '2023-10-18T08:00:00z', '2023-10-18T20:00:00z', '2023-10-19T08:00:00z', '2023-10-19T20:00:00z', '2023-10-20T08:00:00z', '2023-10-20T20:00:00z', '2023-10-21T08:00:00z', '2023-10-21T20:00:00z', '2023-10-22T08:00:00z', '2023-10-22T20:00:00z', '2023-10-23T08:00:00z', '2023-10-23T20:00:00z', '2023-10-24T08:00:00z', '2023-10-24T20:00:00z', '2023-10-25T08:00:00z', '2023-10-25T20:00:00z', '2023-10-26T08:00:00z', '2023-10-26T20:00:00z', '2023-10-27T08:00:00z', '2023-10-27T20:00:00z', '2023-10-28T08:00:00z', '2023-10-28T20:00:00z', '2023-10-29T08:00:00z', '2023-10-29T20:00:00z', '2023-10-30T08:00:00z', '2023-10-30T20:00:00z', '2023-10-31T08:00:00z', '2023-10-31T20:00:00z']
-        ends = ['2023-10-03T20:00:00z', '2023-10-04T08:00:00z', '2023-10-04T20:00:00z', '2023-10-05T08:00:00z', '2023-10-05T20:00:00z', '2023-10-06T08:00:00z', '2023-10-06T20:00:00z', '2023-10-07T08:00:00z', '2023-10-07T20:00:00z', '2023-10-08T08:00:00z', '2023-10-08T20:00:00z', '2023-10-09T08:00:00z', '2023-10-09T20:00:00z', '2023-10-10T08:00:00z', '2023-10-10T20:00:00z', '2023-10-11T08:00:00z', '2023-10-11T20:00:00z', '2023-10-12T08:00:00z', '2023-10-12T20:00:00z', '2023-10-13T08:00:00z', '2023-10-13T20:00:00z', '2023-10-14T08:00:00z', '2023-10-14T20:00:00z', '2023-10-15T08:00:00z', '2023-10-15T20:00:00z', '2023-10-16T08:00:00z', '2023-10-16T20:00:00z', '2023-10-17T08:00:00z', '2023-10-17T20:00:00z', '2023-10-18T08:00:00z', '2023-10-18T20:00:00z', '2023-10-19T08:00:00z', '2023-10-19T20:00:00z', '2023-10-20T08:00:00z', '2023-10-20T20:00:00z', '2023-10-21T08:00:00z', '2023-10-21T20:00:00z', '2023-10-22T08:00:00z', '2023-10-22T20:00:00z', '2023-10-23T08:00:00z', '2023-10-23T20:00:00z', '2023-10-24T08:00:00z', '2023-10-24T20:00:00z', '2023-10-25T08:00:00z', '2023-10-25T20:00:00z', '2023-10-26T08:00:00z', '2023-10-26T20:00:00z', '2023-10-27T08:00:00z', '2023-10-27T20:00:00z', '2023-10-28T08:00:00z', '2023-10-28T20:00:00z', '2023-10-29T08:00:00z', '2023-10-29T20:00:00z', '2023-10-30T08:00:00z', '2023-10-30T20:00:00z', '2023-10-31T08:00:00z', '2023-10-31T20:00:00z', '2023-11-01T08:00:00z']
-        df_raw = pd.DataFrame()
-        for start, end in zip(starts, ends):
-            query_api = influxdb_api.init_query_api(influxdb_api.url, influxdb_api.token)
-            qc = influxdb_api.get_cluster_avg_power(start, end)
-            cluster_avg_power = influxdb_api.execute_query(query_api, qc)
-            df_raw = pd.concat([df_raw, cluster_avg_power], axis=0, ignore_index=True)
+        self.scaler = StandardScaler()
+
+        df_raw = pd.read_csv(os.path.join(self.root_path, self.data_path))
         # df_raw的第一列是时间戳，第二列也就是最后一列是数据中心的平均功耗
         # 按照240s的间隔选择数据，500预测200，这样包含2个多周期
         df_raw = df_raw.iloc[::24]
@@ -62,10 +55,7 @@ class Server(Dataset):
         print(self.flag, " border1: ", border1)
         print(self.flag, " border2: ", border2)
 
-
-
-        df_data = df_raw[['values']]
-        self.scaler = StandardScaler()
+        df_data = df_raw[['values']]    # 只取功耗这一列，保持df_data是一个DataFrame
         if self.scale:
             train_data = df_data[border1s[1]:border2s[1]].values
             self.scaler.fit(np.reshape(train_data, (-1,1)))

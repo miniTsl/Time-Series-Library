@@ -72,10 +72,6 @@ def data_provider(args, flag):
     else:
         if args.data == 'm4':
             drop_last = False
-        if args.data == 'Server':
-            data_set = Data(
-                flag=flag,
-                size=[args.seq_len, args.pred_len])
         else:
             data_set = Data(
                 root_path=args.root_path,
@@ -88,7 +84,7 @@ def data_provider(args, flag):
                 freq=freq,
                 seasonal_patterns=args.seasonal_patterns
             )
-            print('flag: ', flag, 'len dataset: ', len(data_set))
+            print('flag:', flag, 'len dataset: ', len(data_set))
                 
 
         data_loader = DataLoader(
