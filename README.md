@@ -11,7 +11,7 @@ We provide a neat code base to evaluate advanced deep time series models or deve
 
 Till October 2023, the top three models for five different tasks are:
 
-| Model<br>Ranking | Long-term<br>Forecasting                          | Short-term<br>Forecasting                                    | Imputation                                                   | Anomaly<br>Detection                                         | Classification                                     |
+| Model<br>Ranking | Long-term<br>Forecasting                          | Short-term<br>Forecasting                                    | Imputation                                                   | Classification                                         |  Anomaly<br>Detection                                    |
 | ---------------- |---------------------------------------------------| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | -------------------------------------------------- |
 | 🥇 1st            | [iTransformer](https://arxiv.org/abs/2310.06625)  | [TimesNet](https://arxiv.org/abs/2210.02186)                 | [TimesNet](https://arxiv.org/abs/2210.02186)                 | [TimesNet](https://arxiv.org/abs/2210.02186)                 | [TimesNet](https://arxiv.org/abs/2210.02186)       |
 | 🥈 2nd            |   [PatchTST](https://github.com/yuqinie98/PatchTST)    | [Non-stationary<br/>Transformer](https://github.com/thuml/Nonstationary_Transformers) | [Non-stationary<br/>Transformer](https://github.com/thuml/Nonstationary_Transformers) | [Non-stationary<br/>Transformer](https://github.com/thuml/Nonstationary_Transformers) | [FEDformer](https://github.com/MAZiqing/FEDformer) |
@@ -52,7 +52,7 @@ See our latest paper [[TimesNet]](https://arxiv.org/abs/2210.02186) for the comp
 pip install -r requirements.txt
 ```
 
-2. Prepare Data. You can obtain the well pre-processed datasets from [[Google Drive]](https://drive.google.com/drive/folders/13Cg1KYOlzM5C7K8gK8NfC-F3EYxkM3D2?usp=sharing), [[Tsinghua Cloud]](https://cloud.tsinghua.edu.cn/f/84fbc752d0e94980a610/), or [[Baidu Drive]](https://pan.baidu.com/s/1r3KhGd0Q9PJIUZdfEYoymg?pwd=i9iy), Then place the downloaded data in the folder`./dataset`. Here is a summary of supported datasets.
+2. Prepare Data. You can obtain the well pre-processed datasets from [[Google Drive]](https://drive.google.com/drive/folders/13Cg1KYOlzM5C7K8gK8NfC-F3EYxkM3D2?usp=sharing) or [[Baidu Drive]](https://pan.baidu.com/s/1r3KhGd0Q9PJIUZdfEYoymg?pwd=i9iy), Then place the downloaded data in the folder`./dataset`. Here is a summary of supported datasets.
 
 <p align="center">
 <img src=".\pic\dataset.png" height = "200" alt="" align=center />
